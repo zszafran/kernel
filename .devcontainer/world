@@ -1,0 +1,11 @@
+app-editors/vim
+app-emulation/qemu
+app-portage/gentoolkit
+app-shells/zsh
+dev-lang/go
+dev-libs/libisoburn
+dev-util/bazel
+dev-vcs/git
+net-misc/curl
+sys-boot/grub
+sys-devel/crossdev

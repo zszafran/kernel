@@ -1,0 +1,51 @@
+load("//build_defs:asm.bzl", "asm_binary")
+load("//build_defs:gcc.bzl", "gcc_binary", "gcc_linked_binary")
+load("//build_defs:grub.bzl", "grub_mkrescue")
+load("//build_defs:qemu.bzl", "qemu_deploy")
+
+asm_binary(
+    name = "boot",
+    srcs = [
+        "boot.S"
+    ],
+)
+
+gcc_binary(
+    name = "main",
+    cflags = [
+        "-std=gnu99",
+        "-ffreestanding",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+    ],
+    srcs = [
+        "main.c",
+    ],
+)
+
+gcc_linked_binary(
+    name = "kernel",
+    config = "linker.ld",
+    cflags = [
+        "-ffreestanding",
+        "-O2",
+        "-nostdlib",
+        "-lgcc",
+    ],
+    srcs = [
+        ":boot",
+        ":main",
+    ],
+)
+
+grub_mkrescue(
+    name = "rescue",
+    config = "grub.cfg",
+    kernel = ":kernel"
+)
+
+qemu_deploy(
+    name = "qemu",
+    cdrom = ":rescue",
+)

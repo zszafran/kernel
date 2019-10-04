@@ -1,0 +1,1 @@
+sys-boot/grub mount grub_platforms_multiboot grub_platforms_qemu grub_platforms_pc fonts
