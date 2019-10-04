@@ -17,7 +17,7 @@ RUN crossdev --stage1 --stable --target i686-elf -oO /var/db/repos/crossdev
 RUN crossdev --stage1 --stable --target x86_64-elf -oO /var/db/repos/crossdev
 RUN rm -rf /usr/portage/distfiles/*
 
-RUN export JAVA_HOME="$(java-config --jdk-home)" 
+ENV JAVA_HOME="/etc/java-config-2/current-system-vm" 
 
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 RUN go get github.com/bazelbuild/buildtools/buildifier
