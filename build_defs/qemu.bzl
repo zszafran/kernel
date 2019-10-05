@@ -5,21 +5,28 @@ def _qemu_deploy_impl(ctx):
 
     out_file = ctx.actions.declare_file("%s.sh" % ctx.attr.name)
 
+    args = list()
+
+    if ctx.attr.nographic:
+        args.append("-nographic")
+
+    if ctx.attr.curses:
+        args.append("-curses")
+
+    if ctx.attr.debugger:
+        args.append("-S")
+        args.append("-s")
+
+    args.extend([
+        "-vga", ctx.attr.vga,
+        "-serial", ctx.attr.serial,
+        "-cpu", ctx.attr.cpu,
+        "-cdrom", in_cdrom.short_path,
+    ])
+
     ctx.actions.write(
         output = out_file,
-        content = """
-            {bin} \\
-                -nographic \\
-	            -curses \\
-	            -vga std \\
-	            -serial mon:stdio \\
-	            -cpu max \\
-	            -s \\
-                -cdrom {iso}
-            """.format(
-                bin = tc.qemu.path,
-                iso = in_cdrom.short_path,
-            ),
+        content = "%s %s" % (tc.qemu.path, " ".join(args)),
         is_executable = True,
     )
 
@@ -34,6 +41,19 @@ qemu_deploy = rule(
     attrs = {
         "cdrom": attr.label(
             allow_single_file = [".iso"],
+            mandatory = True,
         ),
+        "nographic": attr.bool(),
+        "curses": attr.bool(),
+        "vga": attr.string(
+            default = "std"
+        ),
+        "serial": attr.string(
+            default = "mon:stdio",
+        ),
+        "cpu": attr.string(
+            default = "max",
+        ),
+        "debugger": attr.bool(),
     },
 )

@@ -1,7 +1,7 @@
 load(":toolchain.bzl", "toolchain_info")
 
 platform(
-    name = "platform_x86_32",
+    name = "platform_i686",
     constraint_values = [
         "@platforms//cpu:x86_32",
     ],

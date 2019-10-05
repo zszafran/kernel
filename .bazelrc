@@ -1,5 +1,5 @@
-build -s --jobs=4 --config=x86_32
+build -s --jobs=4
 
-build:x86_32 --platforms=//toolchain:platform_x86_32
+build:i686 --platforms=//toolchain:platform_i686
 
 build:x86_64 --platforms=//toolchain:platform_x86_64

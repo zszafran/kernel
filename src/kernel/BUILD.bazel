@@ -48,4 +48,20 @@ grub_mkrescue(
 qemu_deploy(
     name = "qemu",
     cdrom = ":rescue",
+    nographic = True,
+    curses = True,
+    vga = "std",
+    serial = "mon:stdio",
+    cpu = "max"
+)
+
+qemu_deploy(
+    name = "qemu_debug",
+    cdrom = ":rescue",
+    nographic = True,
+    curses = True,
+    vga = "std",
+    serial = "mon:stdio",
+    cpu = "max",
+    debugger = True,
 )

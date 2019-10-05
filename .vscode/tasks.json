@@ -1,0 +1,61 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build i686",
+            "type": "shell",
+            "command": "bazel build --config=i686 src/kernel",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build x86_64",
+            "type": "shell",
+            "command": "bazel build --config=x86_64 src/kernel",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run i686",
+            "type": "shell",
+            "command": "bazel run --config=i686 src/kernel:qemu",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run x86_64",
+            "type": "shell",
+            "command": "bazel run --config=x86_64 src/kernel:qemu",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "(GDB) Run i686",
+            "type": "shell",
+            "command": "bazel run --config=i686 src/kernel:qemu_debug",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "(GDB) Run x86_64",
+            "type": "shell",
+            "command": "bazel run --config=x86_64 src/kernel:qemu_debug",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -26,13 +26,18 @@
 	},
 
 	// Uncomment the next line if you want to publish any ports.
-	// "appPort": [],
+	"appPort": ["1234:1234"],
 
 	// Uncomment the next line to run commands after the container is created.
 	// "postCreateCommand": "uname -a",
 
 	// Add the IDs of extensions you want installed when the container is created in the array below.
 	"extensions": [
-		"devondcarew.bazel-code"
+		"devondcarew.bazel-code",
+		"ms-vscode.cpptools",
+		"bierner.github-markdown-preview",
+		"davidanson.vscode-markdownlint",
+		"codezombiech.gitignore",
+		"webfreak.debug"
 	]
 }
