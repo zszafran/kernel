@@ -9,14 +9,6 @@ The main goal of this project is to not only develope a kernel/os but to also pr
 * Connect to [dev container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 * Build/run the OS (`Cmd/Ctrl + Shift + B`)
 
-## Bare Bones
-
-This branch follows the [Bare Bone](https://wiki.osdev.org/Bare_Bones) tutorial to ensure that the build system and toolchains can provide the minimum necessary for basic kernel development.
-
-## Meaty Skeleton
-
-[Meaty Skeleton](https://wiki.osdev.org/Meaty_Skeleton)
-
 ## Dev Container
 
 This container is a minimal Gentoo stage3 + portage image that installs some basic dev tools including Bazel and crossdev utils.
