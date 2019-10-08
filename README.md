@@ -25,7 +25,7 @@ Toolchains can be manually selected using the `--config=i686` or `--config=x86_6
 
 ## Build System
 
-The build system is powered by [Bazel](https://bazel.build/) and provides several custom Build Rules written around the custom toolchain. This includes `asm_binary`, `gcc_binary`, `gcc_linked_binary`, `gcc_library`, `gcc_builtin`, `grub_rescue`, and `qemu_deplay`.
+The build system is powered by [Bazel](https://bazel.build/) and provides several custom Build Rules written around the custom toolchain.
 
 > **NOTE**: The builtin cc_toolchain, cc_binary, and cc_library rules were specifically avoided for this project. It is likely that they would work well with this project, but for simplicity and flexibility the custom rules seemed like a better choice.
 
