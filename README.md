@@ -2,9 +2,20 @@
 
 The main goal of this project is to not only develope a kernel/os but to also provide a consistent developer setup straight from the repository. This includes the toolchains and binaries needed for building the source in addition to the utilities needed for future development.
 
+## Setup
+
+* Install [docker](https://www.docker.com/products/docker-desktop) and [vscode](https://code.visualstudio.com/)
+* Clone the repo and open in vscode
+* Connect to [dev container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+* Build/run the OS (`Cmd/Ctrl + Shift + B`)
+
 ## Bare Bones
 
 This branch follows the [Bare Bone](https://wiki.osdev.org/Bare_Bones) tutorial to ensure that the build system and toolchains can provide the minimum necessary for basic kernel development.
+
+## Meaty Skeleton
+
+[Meaty Skeleton](https://wiki.osdev.org/Meaty_Skeleton)
 
 ## Dev Container
 
@@ -22,7 +33,7 @@ Toolchains can be manually selected using the `--config=i686` or `--config=x86_6
 
 ## Build System
 
-The build system is powered by [Bazel](https://bazel.build/) and provides several custom Build Rules written around the custom toolchain. This includes `asm_binary`, `gcc_binary`, `gcc_linked_binary`, `grub_rescue`, and `qemu_deplay`.
+The build system is powered by [Bazel](https://bazel.build/) and provides several custom Build Rules written around the custom toolchain. This includes `asm_binary`, `gcc_binary`, `gcc_linked_binary`, `gcc_library`, `gcc_builtin`, `grub_rescue`, and `qemu_deplay`.
 
 > **NOTE**: The builtin cc_toolchain, cc_binary, and cc_library rules were specifically avoided for this project. It is likely that they would work well with this project, but for simplicity and flexibility the custom rules seemed like a better choice.
 
@@ -43,13 +54,13 @@ bazel build --config=x86_64 src/kernel
 Building the GRUB rescue ISO with kernel
 
 ```shell
-bazel build --config=i686 src/kernel:rescue
+bazel build --config=i686 src:rescue
 ```
 
 Running the GRUB reduce ISO with QEMU
 
 ```shell
-bazel run --config=i686 src/kernel:qemu
+bazel run --config=i686 src:qemu
 ```
 
 ## Debugging
@@ -57,7 +68,7 @@ bazel run --config=i686 src/kernel:qemu
 To start QEMU with GDB and block in booting
 
 ```shell
-bazel run --config=i686 src/kernel:qemu_debug
+bazel run --config=i686 src:qemu_debug
 ```
 
 > **TODO**: Need to install GDB for the crossdev targets via the Dockerfile.

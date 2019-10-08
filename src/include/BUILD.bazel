@@ -1,0 +1,9 @@
+filegroup(
+    name = "include",
+    srcs = glob(["**/*"]),
+    visibility = [
+        "//src:arch_internal",
+        "//src:kernel_internal",
+        "//src:lib_internal",
+    ],
+)

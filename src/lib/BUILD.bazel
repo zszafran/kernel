@@ -1,0 +1,21 @@
+load("//build_defs:gcc.bzl", "gcc_library")
+
+gcc_library(
+    name = "lib",
+    srcs = [
+        "//src/lib/stdio",
+        "//src/lib/stdlib",
+        "//src/lib/string",
+    ],
+    visibility = ["//src:kernel_internal"],
+)
+
+gcc_library(
+    name = "libk",
+    srcs = [
+        "//src/lib/stdio:libk",
+        "//src/lib/stdlib:libk",
+        "//src/lib/string:libk",
+    ],
+    visibility = ["//src:kernel_internal"],
+)

@@ -1,0 +1,44 @@
+load("//build_defs:grub.bzl", "grub_mkrescue")
+load("//build_defs:qemu.bzl", "qemu_deploy")
+
+package_group(
+    name = "arch_internal",
+    packages = ["//src/arch/..."],
+)
+
+package_group(
+    name = "kernel_internal",
+    packages = ["//src/kernel/..."],
+)
+
+package_group(
+    name = "lib_internal",
+    packages = ["//src/lib/..."],
+)
+
+grub_mkrescue(
+    name = "rescue",
+    config = "grub.cfg",
+    kernel = "//src/kernel",
+)
+
+qemu_deploy(
+    name = "qemu",
+    cdrom = ":rescue",
+    cpu = "max",
+    curses = True,
+    nographic = True,
+    serial = "mon:stdio",
+    vga = "std",
+)
+
+qemu_deploy(
+    name = "qemu_debug",
+    cdrom = ":rescue",
+    cpu = "max",
+    curses = True,
+    debugger = True,
+    nographic = True,
+    serial = "mon:stdio",
+    vga = "std",
+)

@@ -1,0 +1,16 @@
+load("//build_defs:gcc.bzl", "gcc_binary")
+
+package(default_visibility = ["//src:lib_internal"])
+
+gcc_binary(
+    name = "stdio",
+    srcs = glob(["*.c"]),
+    includes = ["//src/include"],
+)
+
+gcc_binary(
+    name = "libk",
+    srcs = glob(["*.c"]),
+    cppflags = ["-D__is_libk"],
+    includes = ["//src/include"],
+)

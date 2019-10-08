@@ -10,6 +10,19 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "bazel",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "Build did NOT complete successfully",
+                }
+            },
+            "presentation": {
+                "reveal": "always",
             }
         },
         {
@@ -19,12 +32,25 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "bazel",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "Build did NOT complete successfully",
+                }
+            },
+            "presentation": {
+                "reveal": "always",
             }
         },
         {
             "label": "Run i686",
             "type": "shell",
-            "command": "bazel run --config=i686 src/kernel:qemu",
+            "command": "bazel run --config=i686 src:qemu",
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -33,7 +59,7 @@
         {
             "label": "Run x86_64",
             "type": "shell",
-            "command": "bazel run --config=x86_64 src/kernel:qemu",
+            "command": "bazel run --config=x86_64 src:qemu",
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -42,7 +68,7 @@
         {
             "label": "(GDB) Run i686",
             "type": "shell",
-            "command": "bazel run --config=i686 src/kernel:qemu_debug",
+            "command": "bazel run --config=i686 src:qemu_debug",
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -51,7 +77,7 @@
         {
             "label": "(GDB) Run x86_64",
             "type": "shell",
-            "command": "bazel run --config=x86_64 src/kernel:qemu_debug",
+            "command": "bazel run --config=x86_64 src:qemu_debug",
             "group": {
                 "kind": "test",
                 "isDefault": true

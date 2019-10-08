@@ -1,25 +1,29 @@
-load("@bazel_skylib//lib:shell.bzl", "shell")
+load("@bazel_skylib//lib:paths.bzl", "paths")
 
 def _asm_binary_impl(ctx):
     tc = ctx.toolchains["//toolchain:toolchain_type"]
 
     in_files = ctx.files.srcs
 
-    out_file = ctx.actions.declare_file("%s.o" % ctx.attr.name)
+    out_files = list()
 
-    ctx.actions.run(
-        inputs = in_files,
-        outputs = [out_file],
-        progress_message = "Compiling Assembly '%s' binary" % ctx.attr.name,
-        arguments = [
-            " ".join([f.path for f in in_files]),
-            "-o",
-            out_file.path
-        ],
-        executable = tc.asm,
-    )
+    for in_file in in_files:
+        out_file = ctx.actions.declare_file(paths.replace_extension(in_file.basename, ".o"))
+        out_files.append(out_file)
 
-    return [DefaultInfo(files = depset([out_file]))]
+        args = ctx.actions.args()
+        args.add(in_file.path)
+        args.add("-o", out_file.path)
+
+        ctx.actions.run(
+            inputs = [in_file],
+            outputs = [out_file],
+            progress_message = "Compiling Assembly '%s' binary" % ctx.attr.name,
+            arguments = [args],
+            executable = tc.asm,
+        )
+
+    return [DefaultInfo(files = depset(out_files))]
 
 asm_binary = rule(
     implementation = _asm_binary_impl,

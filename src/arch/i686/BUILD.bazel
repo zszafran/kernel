@@ -1,0 +1,25 @@
+load("//build_defs:asm.bzl", "asm_binary")
+
+package(default_visibility = ["//src:arch_internal"])
+
+filegroup(
+    name = "i686",
+    srcs = [
+        ":boot",
+    ],
+)
+
+asm_binary(
+    name = "boot",
+    srcs = ["boot.S"],
+)
+
+asm_binary(
+    name = "crti",
+    srcs = ["crti.S"],
+)
+
+asm_binary(
+    name = "crtn",
+    srcs = ["crtn.S"],
+)

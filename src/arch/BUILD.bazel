@@ -1,0 +1,39 @@
+package(default_visibility = ["//src:kernel_internal"])
+
+config_setting(
+    name = "config_x86_32",
+    constraint_values = [
+        "@platforms//cpu:x86_32",
+    ],
+)
+
+config_setting(
+    name = "config_x86_64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+filegroup(
+    name = "arch",
+    srcs = select({
+        ":config_x86_32": ["//src/arch/i686"],
+        ":config_x86_64": ["//src/arch/x86_64"],
+    }),
+)
+
+filegroup(
+    name = "crti",
+    srcs = select({
+        ":config_x86_32": ["//src/arch/i686:crti"],
+        ":config_x86_64": ["//src/arch/x86_64:crti"],
+    }),
+)
+
+filegroup(
+    name = "crtn",
+    srcs = select({
+        ":config_x86_32": ["//src/arch/i686:crtn"],
+        ":config_x86_64": ["//src/arch/x86_64:crtn"],
+    }),
+)

@@ -3,11 +3,13 @@ def _toolchain_info(ctx):
         platform_common.ToolchainInfo(
             gcc = ctx.executable.gcc,
             asm = ctx.executable.asm,
+            archive = ctx.executable.archive,
             grub_mkrescue = ctx.executable.grub_mkrescue,
             grub_file = ctx.executable.grub_file,
             grub_platform = ctx.files.grub_platform,
             qemu = ctx.executable.qemu,
             cflags = ctx.attr.cflags,
+            ldflags = ctx.attr.ldflags,
         ),
     ]
 
@@ -23,6 +25,12 @@ toolchain_info = rule(
         "asm": attr.label(
             executable = True,
             default = "@compiler//:host_i686-elf-as",
+            allow_single_file = True,
+            cfg = "host",
+        ),
+        "archive": attr.label(
+            executable = True,
+            default = "@compiler//:host_i686-elf-ar",
             allow_single_file = True,
             cfg = "host",
         ),
@@ -48,5 +56,6 @@ toolchain_info = rule(
             cfg = "host",
         ),
         "cflags": attr.string_list(),
+        "ldflags": attr.string_list(),
     },
 )
