@@ -7,7 +7,9 @@ gcc_builtin(name = "crtend")
 gcc_binary(
     name = "kernel_lib",
     srcs = [
+        "ansi.c",
         "kernel.c",
+        "log.c",
         "tty.c",
     ],
     includes = ["//src/include"],

@@ -2,11 +2,13 @@
 #include <stdint.h>
 
 #include <kernel/tty.h>
+#include <kernel/log.h>
 
 extern const uint32_t multiboot_ptr;
 extern const uint32_t multiboot_magic;
 
 void kernel_main(void) {
 	terminal_initialize();
-	printf("Hello, kernel World!\n");
+	log("Booting...");
+	debug("Hello, kernel World!");
 }
