@@ -1,29 +1,35 @@
-load("//build_defs:gcc.bzl", "gcc_binary", "gcc_builtin", "gcc_executable")
+load("//build_defs:gcc.bzl", "gcc_binary", "gcc_builtin", "gcc_executable", "gcc_linker")
 
 gcc_builtin(name = "crtbegin")
 
 gcc_builtin(name = "crtend")
 
 gcc_binary(
-    name = "lib",
+    name = "kernel_lib",
     srcs = [
-        "main.c",
+        "kernel.c",
         "tty.c",
     ],
+    includes = ["//src/include"],
+)
+
+gcc_linker(
+    name = "linker",
+    src = "linker.ld",
     includes = ["//src/include"],
 )
 
 gcc_executable(
     name = "kernel",
     srcs = [
-        ":lib",
+        ":kernel_lib",
         "//src/arch",
         "//src/lib:libk",
     ],
-    config = "linker.ld",
     crtbegin = ":crtbegin",
     crtend = ":crtend",
     crti = "//src/arch:crti",
     crtn = "//src/arch:crtn",
+    linker = ":linker",
     visibility = ["//visibility:public"],
 )

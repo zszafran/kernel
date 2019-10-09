@@ -1,43 +1,63 @@
-/* The bootloader will look at this image and start execution at the symbol
-   designated as the entry point. */
 ENTRY(_start)
+
+#include <kernel/kernel.h>
+
+#define SECTION(name) \
+    name BLOCK(4K) : ALIGN(4K)
+
+#define DEFINE_START(name) \
+    _##name##_START = ABSOLUTE(.);
+
+#define DEFINE_END(name) \
+    _##name##_SIZE = ABSOLUTE(.) - _##name##_START;
  
-/* Tell where the various sections of the object files will be put in the final
-   kernel image. */
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
-	. = 1M;
+	. = KERNEL_PHYSICAL_ADDR;
+
+	DEFINE_START(KERNEL)
  
-	/* First put the multiboot header, as it is required to be put very early
-	   early in the image or the bootloader won't recognize the file format.
-	   Next we'll put the .text section. */
-	.text BLOCK(4K) : ALIGN(4K)
+	SECTION(.text)
 	{
-		*(.multiboot)
+		DEFINE_START(TEXT)
+		KEEP(*(.multiboot))
 		*(.text)
+		DEFINE_END(TEXT)
 	}
  
-	/* Read-only data. */
-	.rodata BLOCK(4K) : ALIGN(4K)
+	SECTION(.rodata)
 	{
+		DEFINE_START(RODATA)
 		*(.rodata)
+		DEFINE_END(RODATA)
 	}
  
-	/* Read-write data (initialized) */
-	.data BLOCK(4K) : ALIGN(4K)
+	SECTION(.data)
 	{
+		DEFINE_START(DATA)
 		*(.data)
+		DEFINE_END(DATA)
+	}
+
+	SECTION(.eh_frame)
+	{
+		DEFINE_START(EHFRAME)
+		*(.eh_frame)
+		DEFINE_END(EHFRAME)
 	}
  
-	/* Read-write data (uninitialized) and stack */
-	.bss BLOCK(4K) : ALIGN(4K)
+	SECTION(.bss)
 	{
+		DEFINE_START(BBS)
 		*(COMMON)
 		*(.bss)
+		DEFINE_END(BBS)
 	}
+
+	DEFINE_END(KERNEL)
  
-	/* The compiler may produce other sections, by default it will put them in
-	   a segment with the same name. Simply add stuff here as needed. */
+	/DISCARD/ :
+    {
+		*(.comment)
+   	}
 }
