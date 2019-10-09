@@ -11,7 +11,8 @@ def _grub_mkrescue_impl(ctx):
     out_dir = ctx.actions.declare_directory("%s.grub_mkrescue" % ctx.attr.name)
 
     ctx.actions.run_shell(
-        inputs = [in_kernel_file, in_config_file, tc.grub_mkrescue] + tc.grub_platform,
+        tools = [tc.grub_mkrescue] + tc.grub_platform,
+        inputs = [in_kernel_file, in_config_file],
         outputs = [out_file, out_dir],
         progress_message = "Creating Grub rescue ISO for '%s'" % ctx.attr.name,
         command = """
@@ -22,13 +23,13 @@ def _grub_mkrescue_impl(ctx):
                 -d {platform} \\
                 {dir};
             """.format(
-                bin = tc.grub_mkrescue.path,
-                dir = out_dir.path,
-                kernel = in_kernel_file.path,
-                config = in_config_file.path,
-                iso = out_file.path,
-                platform = " ".join(grub_platform_dirs),
-            ),
+            bin = tc.grub_mkrescue.path,
+            dir = out_dir.path,
+            kernel = in_kernel_file.path,
+            config = in_config_file.path,
+            iso = out_file.path,
+            platform = " ".join(grub_platform_dirs),
+        ),
     )
 
     return [DefaultInfo(files = depset([out_file]))]
