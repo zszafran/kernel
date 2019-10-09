@@ -1,5 +1,4 @@
-#ifndef _STDIO_H
-#define _STDIO_H 1
+#pragma once
 
 #include <sys/cdefs.h>
 
@@ -15,6 +14,4 @@ int puts(const char*);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

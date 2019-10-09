@@ -1,5 +1,4 @@
-#ifndef _STRING_H
-#define _STRING_H 1
+#pragma once
 
 #include <sys/cdefs.h>
 
@@ -17,6 +16,4 @@ size_t strlen(const char*);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif
