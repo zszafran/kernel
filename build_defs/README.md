@@ -58,7 +58,7 @@ gcc_executable(
         ":bar",
         ":baz",
     ],
-    config = "linker.ld",
+    linker = "linker.ld",
     crtbegin = ":crtbegin",
     crtend = ":crtend",
     crti = ":crti",
@@ -72,6 +72,16 @@ gcc_executable(
 gcc_builtin(name = "crtbegin")
 
 gcc_builtin(name = "crtend")
+```
+
+### gcc_linker
+
+```python
+gcc_linker(
+    name = "foo",
+    src = "linker.ld",
+    includes = ["//src/include"],
+)
 ```
 
 ## GRUB

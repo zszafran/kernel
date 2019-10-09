@@ -58,7 +58,7 @@ def _gcc_executable_impl(ctx):
     out_file = ctx.actions.declare_file("%s.bin" % ctx.attr.name)
 
     args = ctx.actions.args()
-    args.add("-T", ctx.file.config.path)
+    args.add("-T", ctx.file.linker.path)
     args.add("-o", out_file.path)
     args.add_all(tc.ldflags)
     args.add_all(ctx.attr.ldflags)
@@ -69,9 +69,9 @@ def _gcc_executable_impl(ctx):
     args.add(ctx.file.crtn.path)
 
     ctx.actions.run(
-        inputs = in_files + [ctx.file.config],
+        inputs = in_files + [ctx.file.linker],
         outputs = [out_file],
-        progress_message = "Linking C '%s' binary" % ctx.attr.name,
+        progress_message = "Linking C '%s' executable" % ctx.attr.name,
         arguments = [args],
         executable = tc.gcc,
     )
@@ -97,7 +97,7 @@ gcc_executable = rule(
         "crtend": attr.label(
             allow_single_file = [".o"],
         ),
-        "config": attr.label(
+        "linker": attr.label(
             allow_single_file = [".ld"],
         ),
         "ldflags": attr.string_list(),
@@ -117,7 +117,8 @@ def _gcc_builtin_impl(ctx):
     )
 
     ctx.actions.run_shell(
-        inputs = [tc.gcc],
+        tools = [tc.gcc],
+        inputs = [],
         outputs = [out_file],
         progress_message = "Locating GCC builtin for '%s'" % ctx.attr.name,
         command = command,
@@ -158,6 +159,43 @@ gcc_library = rule(
     attrs = {
         "srcs": attr.label_list(
             allow_files = [".o"],
+        ),
+    },
+)
+
+def _gcc_linker_impl(ctx):
+    tc = ctx.toolchains["//toolchain:toolchain_type"]
+
+    in_file = ctx.file.src
+    out_file = ctx.actions.declare_file("%s.ld" % ctx.attr.name)
+
+    command = "{bin} -P -D__ASM__ -E -x c {includes} {cflags} {input} | grep -v '^#' >> {output}".format(
+        bin = tc.gcc.path,
+        cflags = " ".join(tc.cflags),
+        includes = " ".join(["-I%s" % i.label.package for i in ctx.attr.includes]),
+        input = in_file.path,
+        output = out_file.path,
+    )
+
+    ctx.actions.run_shell(
+        tools = [tc.gcc],
+        inputs = [in_file],
+        outputs = [out_file],
+        progress_message = "Proprocessing '%s' linker" % ctx.attr.name,
+        command = command,
+    )
+
+    return [DefaultInfo(files = depset([out_file]))]
+
+gcc_linker = rule(
+    implementation = _gcc_linker_impl,
+    toolchains = ["//toolchain:toolchain_type"],
+    attrs = {
+        "src": attr.label(
+            allow_single_file = [".ld"],
+        ),
+        "includes": attr.label_list(
+            allow_files = [".h"],
         ),
     },
 )
