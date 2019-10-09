@@ -1,25 +1,23 @@
-load("//build_defs:asm.bzl", "asm_binary")
+load("//build_defs:gcc.bzl", "gcc_binary")
 
 package(default_visibility = ["//src:arch_internal"])
 
-filegroup(
+gcc_binary(
     name = "i686",
     srcs = [
-        ":boot",
+        "boot.S",
+        "checks.S",
+        "multiboot2.S",
     ],
+    includes = ["//src/include"],
 )
 
-asm_binary(
-    name = "boot",
-    srcs = ["boot.S"],
-)
-
-asm_binary(
+gcc_binary(
     name = "crti",
     srcs = ["crti.S"],
 )
 
-asm_binary(
+gcc_binary(
     name = "crtn",
     srcs = ["crtn.S"],
 )

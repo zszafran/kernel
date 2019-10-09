@@ -2,21 +2,6 @@
 
 This is a collection of custom build rules that wrap around the toolchain.
 
-## Assembly
-
-```python
-load("//build_defs:asm.bzl", "asm_binary")
-```
-
-### asm_binary
-
-```python
-asm_binary(
-    name = "foo",
-    srcs = ["foo.S"]
-)
-```
-
 ## GCC
 
 ```python
@@ -30,7 +15,7 @@ gcc_binary(
     name = "foo",
     srcs = [
         "foo.c",
-        "bar.c",
+        "bar.S",
     ],
     includes = ["//src/include"],
 )

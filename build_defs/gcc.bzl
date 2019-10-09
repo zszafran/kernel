@@ -35,7 +35,7 @@ gcc_binary = rule(
     toolchains = ["//toolchain:toolchain_type"],
     attrs = {
         "srcs": attr.label_list(
-            allow_files = [".c"],
+            allow_files = [".c", ".S"],
         ),
         "includes": attr.label_list(
             allow_files = [".h"],
