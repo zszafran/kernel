@@ -21,6 +21,7 @@ SECTIONS
 	{
 		DEFINE_START(TEXT)
 		KEEP(*(.multiboot))
+		*(.multiboot.info)
 		*(.text)
 		DEFINE_END(TEXT)
 	}

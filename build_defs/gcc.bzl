@@ -169,7 +169,10 @@ def _gcc_linker_impl(ctx):
     in_file = ctx.file.src
     out_file = ctx.actions.declare_file("%s.ld" % ctx.attr.name)
 
-    command = "{bin} -P -D__ASM__ -E -x c {includes} {cflags} {input} | grep -v '^#' >> {output}".format(
+    command = """
+    OUT=$({bin} -P -D__ASM__ -E -x c {includes} {cflags} {input});
+    echo $OUT | grep -v '^#' >> {output};
+    """.format(
         bin = tc.gcc.path,
         cflags = " ".join(tc.cflags),
         includes = " ".join(["-I%s" % i.label.package for i in ctx.attr.includes]),
@@ -179,7 +182,7 @@ def _gcc_linker_impl(ctx):
 
     ctx.actions.run_shell(
         tools = [tc.gcc],
-        inputs = [in_file],
+        inputs = [in_file] + ctx.files.includes,
         outputs = [out_file],
         progress_message = "Proprocessing '%s' linker" % ctx.attr.name,
         command = command,

@@ -68,7 +68,7 @@
 	.size _start, . - _start
 
 # Multiboot info pointer
-.section .data.multiboot_info
+.section .multiboot.info
 	.global multiboot_ptr
 	.global multiboot_magic
 	multiboot_ptr:

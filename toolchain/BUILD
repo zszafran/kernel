@@ -21,6 +21,7 @@ toolchain_info(
     archive = "@compiler//:host_i686-elf-ar",
     asm = "@compiler//:host_i686-elf-as",
     cflags = [
+        "-std=gnu11",
         "-ffreestanding",
         "-Wall",
         "-Wextra",
@@ -57,6 +58,7 @@ toolchain_info(
     archive = "@compiler//:host_x86_64-elf-ar",
     asm = "@compiler//:host_x86_64-elf-as",
     cflags = [
+        "-std=gnu11",
         "-ffreestanding",
         "-Wall",
         "-Wextra",
