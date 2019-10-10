@@ -26,6 +26,7 @@ gcc_executable(
     srcs = [
         ":kernel_lib",
         "//src/arch",
+        "//src/boot",
         "//src/lib:libk",
     ],
     crtbegin = ":crtbegin",

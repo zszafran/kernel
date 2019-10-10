@@ -7,7 +7,6 @@ gcc_library(
         "//src/lib/stdlib",
         "//src/lib/string",
     ],
-    visibility = ["//src:kernel_internal"],
 )
 
 gcc_library(
@@ -17,5 +16,8 @@ gcc_library(
         "//src/lib/stdlib:libk",
         "//src/lib/string:libk",
     ],
-    visibility = ["//src:kernel_internal"],
+    visibility = [
+        "//src:boot_internal",
+        "//src:kernel_internal",
+    ],
 )

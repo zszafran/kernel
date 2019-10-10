@@ -22,7 +22,10 @@
 		"terminal.explorerKind": "external",
 		"bazel.buildifierPath": "/root/go/bin/buildifier",
 		"editor.formatOnSave": true,
-		"C_Cpp.formatting": "Disabled"
+		"C_Cpp.formatting": "Disabled",
+		"C_Cpp.default.includePath": [
+			"/workspaces/kernel/src/include"
+		]
 	},
 	// Uncomment the next line if you want to publish any ports.
 	"appPort": [

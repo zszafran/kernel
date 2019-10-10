@@ -1,0 +1,5 @@
+{
+    "C_Cpp.default.includePath": [
+        "/workspaces/kernel/src/include"
+    ],
+}

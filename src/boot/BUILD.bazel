@@ -1,0 +1,10 @@
+load("//build_defs:gcc.bzl", "gcc_binary")
+
+gcc_binary(
+    name = "boot",
+    srcs = [
+        "multiboot2_info.c",
+    ],
+    includes = ["//src/include"],
+    visibility = ["//src:kernel_internal"],
+)
