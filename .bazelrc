@@ -1,4 +1,4 @@
-build -s --jobs=4
+build --jobs=4
 
 build:i686 --platforms=//toolchain:platform_i686
 

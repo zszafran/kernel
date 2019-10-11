@@ -23,6 +23,7 @@ toolchain_info(
     cflags = [
         "-std=gnu11",
         "-ffreestanding",
+        "-fstack-protector",
         "-Wall",
         "-Wextra",
         "-O2",
@@ -65,6 +66,7 @@ toolchain_info(
         "-mno-sse2",
         "-std=gnu11",
         "-ffreestanding",
+        "-fstack-protector",
         "-Wall",
         "-Wextra",
         "-O2",

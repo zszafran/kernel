@@ -3,6 +3,7 @@ load("//build_defs:gcc.bzl", "gcc_library")
 gcc_library(
     name = "lib",
     srcs = [
+        "//src/lib/ssp",
         "//src/lib/stdio",
         "//src/lib/stdlib",
         "//src/lib/string",
@@ -12,6 +13,7 @@ gcc_library(
 gcc_library(
     name = "libk",
     srcs = [
+        "//src/lib/ssp:libk",
         "//src/lib/stdio:libk",
         "//src/lib/stdlib:libk",
         "//src/lib/string:libk",

@@ -11,7 +11,7 @@ This directory contains all code specific to the kernel and operating system.
   - [ ] [x86_64 - Long Mode](https://wiki.osdev.org/Long_Mode)
 - [x] [Calling Global Constructors](https://wiki.osdev.org/Calling_Global_Constructors)
 - [ ] [Terminal Support](https://wiki.osdev.org/index.php?title=Printf&action=edit&redlink=1)
-- [ ] [Stack Smash Protector](https://wiki.osdev.org/Stack_Smashing_Protector)
+- [x] [Stack Smash Protector](https://wiki.osdev.org/Stack_Smashing_Protector)
 - [ ] [Multiboot](https://wiki.osdev.org/Multiboot)
 - [ ] [Global Descriptor Table](https://wiki.osdev.org/Global_Descriptor_Table)
 - [ ] [Memory Management](https://wiki.osdev.org/Memory_Management)
