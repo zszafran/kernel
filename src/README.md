@@ -10,9 +10,12 @@ This directory contains all code specific to the kernel and operating system.
   - [x] i686
   - [ ] [x86_64 - Long Mode](https://wiki.osdev.org/Long_Mode)
 - [x] [Calling Global Constructors](https://wiki.osdev.org/Calling_Global_Constructors)
-- [ ] [Terminal Support](https://wiki.osdev.org/index.php?title=Printf&action=edit&redlink=1)
+- [ ] [Terminal Support](http://www.jamesmolloy.co.uk/tutorial_html/3.-The%20Screen.html)
+  - [x] Scrolling
+  - [x] Ansi
+  - [ ] Cursor
 - [x] [Stack Smash Protector](https://wiki.osdev.org/Stack_Smashing_Protector)
-- [ ] [Multiboot](https://wiki.osdev.org/Multiboot)
+- [x] [Multiboot](https://wiki.osdev.org/Multiboot)
 - [ ] [Global Descriptor Table](https://wiki.osdev.org/Global_Descriptor_Table)
 - [ ] [Memory Management](https://wiki.osdev.org/Memory_Management)
   - [ ] [Page Tables](https://wiki.osdev.org/Setting_Up_Paging)
