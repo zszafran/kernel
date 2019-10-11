@@ -58,6 +58,11 @@ toolchain_info(
     archive = "@compiler//:host_x86_64-elf-ar",
     asm = "@compiler//:host_x86_64-elf-as",
     cflags = [
+        "-mcmodel=large",
+        "-mno-red-zone",
+        "-mno-mmx",
+        "-mno-sse",
+        "-mno-sse2",
         "-std=gnu11",
         "-ffreestanding",
         "-Wall",
