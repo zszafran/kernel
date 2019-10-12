@@ -3,6 +3,8 @@
 
 #include <kernel/tty.h>
 #include <kernel/log.h>
+#include <boot/gdt.h>
+#include <boot/idt.h>
 #include <boot/multiboot2_info.h>
 
 multiboot_info_t boot_info;
@@ -14,6 +16,9 @@ void kernel_main(void) {
 		boot_info.framebuffer_tag->common.framebuffer_addr,
       	boot_info.framebuffer_tag->common.framebuffer_width,
       	boot_info.framebuffer_tag->common.framebuffer_height);
+
+	init_gdt();
+	init_idt();
 
 	log("Boot Info:");
 
@@ -65,4 +70,9 @@ void kernel_main(void) {
       	boot_info.multiboot_end);
 
 	debug("Hello, kernel World!");
+
+	asm volatile ("int $0x3");
+	asm volatile ("int $0x4");
+
+	while(1) __asm__ volatile ("hlt");
 }

@@ -9,6 +9,7 @@ gcc_binary(
     srcs = [
         "ansi.c",
         "kernel.c",
+        "isr.c",
         "log.c",
         "tty.c",
     ],

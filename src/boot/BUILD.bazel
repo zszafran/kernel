@@ -3,6 +3,8 @@ load("//build_defs:gcc.bzl", "gcc_binary")
 gcc_binary(
     name = "boot",
     srcs = [
+        "gdt.c",
+        "idt.c",
         "multiboot2_info.c",
     ],
     includes = ["//src/include"],

@@ -7,6 +7,9 @@ gcc_binary(
     srcs = [
         "boot.S",
         "checks.S",
+        "gdt.S",
+        "idt.S",
+        "interrupts.S",
         "multiboot2.S",
     ],
     includes = ["//src/include"],

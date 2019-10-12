@@ -16,7 +16,7 @@ This directory contains all code specific to the kernel and operating system.
   - [ ] Cursor
 - [x] [Stack Smash Protector](https://wiki.osdev.org/Stack_Smashing_Protector)
 - [x] [Multiboot](https://wiki.osdev.org/Multiboot)
-- [ ] [Global Descriptor Table](https://wiki.osdev.org/Global_Descriptor_Table)
+- [x] [Global Descriptor Table](https://wiki.osdev.org/Global_Descriptor_Table)
 - [ ] [Memory Management](https://wiki.osdev.org/Memory_Management)
   - [ ] [Page Tables](https://wiki.osdev.org/Setting_Up_Paging)
   - [ ] [Higher Half](https://wiki.osdev.org/Higher_Half_x86_Bare_Bones)
