@@ -1,9 +1,16 @@
 #include <stdint.h>
 #include <string.h>
 #include <boot/idt.h>
+#include <kernel/io.h>
 
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
+
+#define PIC1 0x20
+#define PIC2 0xA0
+
+#define ICW1 0x11
+#define ICW4 0x01
 
 void init_idt()
 {
@@ -44,6 +51,30 @@ void init_idt()
     idt_set_gate(29, (uint32_t)isr29, 0x08, 0x8E);
     idt_set_gate(30, (uint32_t)isr30, 0x08, 0x8E);
     idt_set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
+
+    // Remap the irq table.
+
+    // send ICW1
+    outb(PIC1, ICW1);
+    outb(PIC2, ICW1);
+
+    // send ICW2
+    outb(PIC1 + 1, 0x20);   
+    outb(PIC2 + 1, 0x28);  
+
+    // send ICW3
+    outb(PIC1 + 1, 4);   
+    outb(PIC2 + 1, 2);
+
+    // send ICW4
+    outb(PIC1 + 1, ICW4);
+    outb(PIC2 + 1, ICW4);
+
+    outb(PIC1 + 1, 0x0);
+    outb(PIC2 + 1, 0x0);
+
+    // disable all IRQs
+    // outb(PIC1 + 1, 0xFF);
 
     idt_set_gate(IRQ0, (uintptr_t)irq0, 0x08, 0x8E);
     idt_set_gate(IRQ1, (uintptr_t)irq1, 0x08, 0x8E);

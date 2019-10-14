@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include <kernel/kbd.h>
+#include <kernel/timer.h>
 #include <kernel/tty.h>
 #include <kernel/log.h>
 #include <boot/gdt.h>
@@ -19,6 +21,8 @@ void kernel_main(void) {
 
 	init_gdt();
 	init_idt();
+	init_timer(50);
+	init_kbd();
 
 	log("Boot Info:");
 
@@ -74,5 +78,7 @@ void kernel_main(void) {
 	asm volatile ("int $0x3");
 	asm volatile ("int $0x4");
 
-	while(1) __asm__ volatile ("hlt");
+	debug("Enablding interrupts...");
+	asm volatile ("sti");
+	while (1);
 }

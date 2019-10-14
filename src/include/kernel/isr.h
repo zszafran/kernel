@@ -20,3 +20,7 @@ typedef struct registers {
    uintptr_t useresp;
    uintptr_t ss;
 } registers_t;
+
+typedef void (*isr_t)(struct registers *);
+
+void register_interrupt_handler(uint16_t n, isr_t handler);

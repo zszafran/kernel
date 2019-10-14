@@ -8,9 +8,12 @@ gcc_binary(
     name = "kernel_lib",
     srcs = [
         "ansi.c",
+        "kbd.c",
         "kernel.c",
+        "io.c",
         "isr.c",
         "log.c",
+        "timer.c",
         "tty.c",
     ],
     includes = ["//src/include"],
