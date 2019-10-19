@@ -2,10 +2,11 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <kernel/multiboot2.h>
 
-void init_framebuffer(uintptr_t framebuffer_addr,
-                      unsigned int width,
-                      unsigned int height);
+#define FRAMEBUFFER_ADDR (uint16_t*)0xB8000
+
+void init_framebuffer(multiboot_info_t* mbi);
 void clear_framebuffer(void);
 void shiftup_framebuffer(void);
 void setcolor_framebuffer(uint8_t color);

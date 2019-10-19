@@ -1,5 +1,6 @@
 ENTRY(_start)
 
+#define LINKER_FILE 1
 #include <kernel/kernel.h>
 
 #define SECTION(name) \

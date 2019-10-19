@@ -1,32 +1,33 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <kernel/ansi.h>
 #include <kernel/framebuffer.h>
+#include <kernel/multiboot2.h>
 #include <kernel/vga.h>
 
-static size_t terminal_width;
-static size_t terminal_height;
-static size_t terminal_row;
-static size_t terminal_column;
+static size_t terminal_width = 80;
+static size_t terminal_height = 25;
+static size_t terminal_row = 0;
+static size_t terminal_column = 0;
 static uint8_t terminal_color;
-static uint16_t *terminal_buffer;
+static uint16_t *terminal_buffer = FRAMEBUFFER_ADDR;
 static struct ansi_state terminal_color_state;
 
-static size_t terminal_row;
-static size_t terminal_column;
-static uint8_t terminal_color;
-static uint16_t* terminal_buffer;
-
-void init_framebuffer(uintptr_t framebuffer_addr,
-                      unsigned int width,
-                      unsigned int height)
+void init_framebuffer(multiboot_info_t* mbi)
 {
-  	terminal_width = width;
-	terminal_height = height;
-	terminal_buffer = (uint16_t *)framebuffer_addr;
+	multiboot_tag_framebuffer_t* fb_tag = get_multiboot_framebuffer_tag(mbi);
+
+	if (!fb_tag) {
+		panic("Unable to initialize framebuffer, tag not found in MBI.");
+	}
+
+  	terminal_width = fb_tag->common.framebuffer_width;
+	terminal_height = fb_tag->common.framebuffer_height;
+	terminal_buffer = (uint16_t*)fb_tag->common.framebuffer_addr;
   	terminal_row = 0;
   	terminal_column = 0;
   	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);

@@ -1,4 +1,3 @@
-.section .text
 .global check_multiboot
 
 # Prints `ERR: ` and the given error code to screen and hangs.

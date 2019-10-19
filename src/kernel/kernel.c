@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include <kernel/kernel.h>
 #include <kernel/keyboard.h>
 #include <kernel/timer.h>
 #include <kernel/framebuffer.h>
@@ -9,13 +10,7 @@
 #include <kernel/idt.h>
 #include <kernel/multiboot2.h>
 
-// TODO: Read these values ondemand instead of parsing. 
-multiboot_info_t mbi;
-
-void kernel_main(uintptr_t mbi_ptr) {
-	// Parse the information passed in from multiboot.
-	read_multiboot(mbi_ptr, &mbi);
-
+void kernel_main(multiboot_info_t* mbi) {
 	// The IDT and GDT tables need to be initialized. The CPU uses these tables
     // to direct interrupts to the kernel and to describe the memory layout
     // of the kernel.
@@ -24,15 +19,9 @@ void kernel_main(uintptr_t mbi_ptr) {
 
 	// Initializes the Framebuffer, this will allow text rendering on the screen
     // This also does not use any systems other than IO ports.
-	init_framebuffer(
-		mbi.framebuffer_tag->common.framebuffer_addr,
-      	mbi.framebuffer_tag->common.framebuffer_width,
-      	mbi.framebuffer_tag->common.framebuffer_height);
+	init_framebuffer(mbi);
 	clear_framebuffer();
 	log("Booting...");
-
-	// Print the multiboot into payload.
-	print_multiboot(&mbi);
 
 	// Register the interrupt handler for the timer chip. This will get us
     // a steady call every MS. The timer DOES NOT start ticking at this time.

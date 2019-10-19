@@ -1,4 +1,3 @@
-.text
 .global idt_flush
 .type idt_flush, @function
 idt_flush:

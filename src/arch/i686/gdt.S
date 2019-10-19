@@ -1,4 +1,3 @@
-.text
 .global gdt_flush
 .type gdt_flush, @function
 gdt_flush:

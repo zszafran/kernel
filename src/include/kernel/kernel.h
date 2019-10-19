@@ -8,3 +8,9 @@
 
 #define VIRT_TO_PHYS_ADDR(addr) ((addr) - KERNEL_VIRTUAL_OFFSET)
 #define PHYS_TO_VIRT_ADDR(addr) ((addr) + KERNEL_VIRTUAL_OFFSET)
+
+#ifndef LINKER_FILE
+
+extern void cpu_idle(void);
+
+#endif /*  ! LINKER_FILE */
