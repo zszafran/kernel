@@ -18,10 +18,14 @@ def _qemu_deploy_impl(ctx):
         args.append("-s")
 
     args.extend([
-        "-vga", ctx.attr.vga,
-        "-serial", ctx.attr.serial,
-        "-cpu", ctx.attr.cpu,
-        "-cdrom", in_cdrom.short_path,
+        "-vga",
+        ctx.attr.vga,
+        "-serial",
+        ctx.attr.serial,
+        "-cpu",
+        ctx.attr.cpu,
+        "-cdrom",
+        in_cdrom.short_path,
     ])
 
     ctx.actions.write(
@@ -46,7 +50,7 @@ qemu_deploy = rule(
         "nographic": attr.bool(),
         "curses": attr.bool(),
         "vga": attr.string(
-            default = "std"
+            default = "std",
         ),
         "serial": attr.string(
             default = "mon:stdio",

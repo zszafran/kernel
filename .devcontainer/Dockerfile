@@ -10,7 +10,7 @@ RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata}
 RUN echo 'crossdev' > /var/db/repos/crossdev/profiles/repo_name
 RUN echo 'masters = gentoo' > /var/db/repos/crossdev/metadata/layout.conf
 
-ENV BAZEL_JAVAC_OPTS="-J-Xms4g -J-Xmx4g"
+ENV BAZEL_JAVAC_OPTS="-J-Xms12g -J-Xmx12g"
 
 RUN emerge -u world
 RUN crossdev --stage1 --stable --target i686-elf -oO /var/db/repos/crossdev
