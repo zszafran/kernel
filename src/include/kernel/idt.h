@@ -15,7 +15,7 @@ typedef struct idt_entry_struct idt_entry_t;
 struct idt_ptr_struct
 {
 	uint16_t limit;
-	uint32_t base;
+	uintptr_t base;
 }__attribute__((packed));
 typedef struct idt_ptr_struct idt_ptr_t;
 
@@ -39,11 +39,11 @@ enum IRQS {
 };
 
 void init_idt();
-void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
+void idt_set_gate(uint8_t, uintptr_t, uint16_t, uint8_t);
 void enable_interrupts();
 void disable_interrupts();
 
-extern void idt_flush(uint32_t);
+extern void idt_flush(uintptr_t);
 
 extern void isr0 ();
 extern void isr1 ();
