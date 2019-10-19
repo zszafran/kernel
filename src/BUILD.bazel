@@ -35,6 +35,9 @@ qemu_deploy(
     nographic = True,
     serial = "mon:stdio",
     vga = "std",
+    usb = True,
+    showcursor = True,
+    devices = ["usb-host"],
 )
 
 qemu_deploy(

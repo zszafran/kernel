@@ -17,6 +17,16 @@ def _qemu_deploy_impl(ctx):
         args.append("-S")
         args.append("-s")
 
+    if ctx.attr.showcursor:
+        args.append("-show-cursor")
+
+    if ctx.attr.usb:
+        args.append("-usb")
+
+    for device in ctx.attr.devices:
+        args.append("-device")
+        args.append(device)
+
     args.extend([
         "-vga",
         ctx.attr.vga,
@@ -27,6 +37,7 @@ def _qemu_deploy_impl(ctx):
         "-cdrom",
         in_cdrom.short_path,
     ])
+
 
     ctx.actions.write(
         output = out_file,
@@ -59,5 +70,8 @@ qemu_deploy = rule(
             default = "max",
         ),
         "debugger": attr.bool(),
+        "showcursor": attr.bool(),
+        "usb": attr.bool(),
+        "devices": attr.string_list(),
     },
 )

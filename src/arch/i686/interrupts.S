@@ -91,7 +91,7 @@ isr_common_stub:
     mov %ax, %gs
 
     call isr_handler
-    pop %ebx     # load the original data segment descrip
+    pop %ebx     # load the original data segment descriptor
     
     mov %bx, %ds
     mov %bx, %es
