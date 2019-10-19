@@ -7,11 +7,6 @@ package_group(
 )
 
 package_group(
-    name = "boot_internal",
-    packages = ["//src/boot/..."],
-)
-
-package_group(
     name = "kernel_internal",
     packages = ["//src/kernel/..."],
 )
