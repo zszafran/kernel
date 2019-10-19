@@ -6,16 +6,7 @@ gcc_builtin(name = "crtend")
 
 gcc_binary(
     name = "kernel_lib",
-    srcs = [
-        "ansi.c",
-        "kbd.c",
-        "kernel.c",
-        "io.c",
-        "isr.c",
-        "log.c",
-        "timer.c",
-        "tty.c",
-    ],
+    srcs = glob(["*.c"]),
     includes = ["//src/include"],
 )
 
@@ -30,7 +21,6 @@ gcc_executable(
     srcs = [
         ":kernel_lib",
         "//src/arch",
-        "//src/boot",
         "//src/lib:libk",
     ],
     crtbegin = ":crtbegin",

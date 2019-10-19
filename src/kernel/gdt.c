@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <boot/gdt.h>
+#include <kernel/gdt.h>
 
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t gdt_ptr;

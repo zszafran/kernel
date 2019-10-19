@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include <kernel/io.h>
-#include <kernel/isr.h>
+#include <kernel/interrupts.h>
 #include <kernel/log.h>
 
 static isr_t interrupt_handlers[256] = { NULL };
@@ -63,7 +63,7 @@ void register_interrupt_handler(uint16_t n, isr_t handler)
     if (n >= (sizeof(interrupt_handlers) / sizeof(interrupt_handlers[0])))
         panic("Attempting to register handler bigger than array");
 
-    log("Registering handler %d", n);
+    debug("Registering handler %d", n);
 
     interrupt_handlers[n] = handler;
 }

@@ -4,14 +4,13 @@ package(default_visibility = ["//src:arch_internal"])
 
 gcc_binary(
     name = "i686",
-    srcs = [
-        "boot.S",
-        "checks.S",
-        "gdt.S",
-        "idt.S",
-        "interrupts.S",
-        "multiboot2.S",
-    ],
+    srcs = glob(
+        ["*.S"],
+        exclude = [
+            "crti.S",
+            "crtn.S",
+        ],
+    ),
     includes = ["//src/include"],
 )
 

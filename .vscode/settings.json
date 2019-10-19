@@ -2,4 +2,11 @@
     "C_Cpp.default.includePath": [
         "/workspaces/kernel/src/include"
     ],
+    "files.associations": {
+        "multiboot2.h": "c",
+        "multiboot2_info.h": "c",
+        "gdt.h": "c",
+        "idt.h": "c",
+        "io.h": "c"
+    },
 }

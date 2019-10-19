@@ -1,7 +1,7 @@
 #include <stdint.h>
 
-#include <boot/idt.h>
-#include <kernel/isr.h>
+#include <kernel/idt.h>
+#include <kernel/interrupts.h>
 #include <kernel/io.h>
 #include <kernel/timer.h>
 #include <kernel/log.h>
@@ -21,14 +21,13 @@ static void timer_callback(__attribute__((unused)) struct registers *regs)
     ++tick;
 
     if (tick % 6000 == 0)
-        log("Tick: %d", tick);
+        debug("Timer Tick: %d", tick);
 }
 
 void init_timer(uint32_t frequency)
 {
     int32_t divisor;
 
-    log("Initalizing timer");
     register_interrupt_handler(IRQ0, &timer_callback);
 
     divisor = PIT_SCALE / frequency;

@@ -32,12 +32,16 @@ qemu_deploy(
     cdrom = ":rescue",
     cpu = "max",
     curses = True,
+    devices = [
+        "usb-host",
+        "usb-ehci",
+        "usb-mouse",
+    ],
     nographic = True,
     serial = "mon:stdio",
-    vga = "std",
-    usb = True,
     showcursor = True,
-    devices = ["usb-host"],
+    usb = True,
+    vga = "std",
 )
 
 qemu_deploy(

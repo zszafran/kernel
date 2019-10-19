@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include <kernel/ansi.h>
-#include <kernel/tty.h>
+#include <kernel/framebuffer.h>
 #include <kernel/vga.h>
 
 static size_t terminal_width;
@@ -20,9 +20,9 @@ static size_t terminal_column;
 static uint8_t terminal_color;
 static uint16_t* terminal_buffer;
 
-void terminal_initialize(uintptr_t framebuffer_addr,
-                         unsigned int width,
-                         unsigned int height)
+void init_framebuffer(uintptr_t framebuffer_addr,
+                      unsigned int width,
+                      unsigned int height)
 {
   	terminal_width = width;
 	terminal_height = height;
@@ -31,10 +31,9 @@ void terminal_initialize(uintptr_t framebuffer_addr,
   	terminal_column = 0;
   	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
   	terminal_color_state = ansi_init();
-  	terminal_clear();
 }
 
-void terminal_clear()
+void clear_framebuffer()
 {
 	for (size_t y = 0; y < terminal_height; y++)
   	{
@@ -46,7 +45,7 @@ void terminal_clear()
   	}
 }
 
-void terminal_shift_up()
+void shiftup_framebuffer()
 {
   	for (size_t y = 0; y < terminal_height - 1; y++)
   	{
@@ -64,18 +63,18 @@ void terminal_shift_up()
   	}
 }
 
-void terminal_setcolor(uint8_t color)
+void setcolor_framebuffer(uint8_t color)
 {
   	terminal_color = color;
 }
 
-void terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y)
+void putentryat_framebuffer(unsigned char c, uint8_t color, size_t x, size_t y)
 {
   	const size_t index = y * terminal_width + x;
   	terminal_buffer[index] = vga_entry(c, color);
 }
 
-void terminal_putchar(char c)
+void putchar_framebuffer(char c)
 {
   	unsigned char uc = c;
 
@@ -94,11 +93,11 @@ void terminal_putchar(char c)
 
   	if (terminal_row == terminal_height)
   	{
-    	terminal_shift_up();
+    	shiftup_framebuffer();
     	terminal_row = terminal_height - 1;
   	}
 
-  	terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
+  	putentryat_framebuffer(uc, terminal_color, terminal_column, terminal_row);
 
   	if (++terminal_column == terminal_width)
   	{
@@ -107,20 +106,20 @@ void terminal_putchar(char c)
   	}
 }
 
-void terminal_write(const char *data, size_t size)
+void write_framebuffer(const char *data, size_t size)
 {
   	for (size_t i = 0; i < size; i++)
   	{
     	struct ansi_color_char color_char = ansi_process(&terminal_color_state, data[i]);
     	if (color_char.ascii != '\0')
     	{
-      		terminal_setcolor(color_char.color);
-      		terminal_putchar(color_char.ascii);
+      		setcolor_framebuffer(color_char.color);
+      		putchar_framebuffer(color_char.ascii);
     	}
   	}
 }
 
-void terminal_writestring(const char *data)
+void writestring_framebuffer(const char *data)
 {
-  	terminal_write(data, strlen(data));
+  	write_framebuffer(data, strlen(data));
 }

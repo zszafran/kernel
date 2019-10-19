@@ -411,6 +411,32 @@ struct multiboot_tag_load_base_addr
   multiboot_uint32_t load_base_addr;
 };
 
+// MODIFICATIONS ==========================================================
+
+typedef struct multiboot_info
+{
+  uint32_t size;
+
+  uintptr_t multiboot_start;
+  uintptr_t multiboot_end;
+
+  struct multiboot_tag_string *command_line_tag;
+  struct multiboot_tag_string *boot_loader_name_tag;
+  struct multiboot_tag_basic_meminfo *basic_meminfo_tag;
+  struct multiboot_tag_bootdev *boot_device_tag;
+  struct multiboot_tag_mmap *memory_map_tag;
+  struct multiboot_tag_new_acpi *new_acpi_tag;
+  struct multiboot_tag_old_acpi *old_acpi_tag;
+  struct multiboot_tag_smbios *smbios_tag;
+  struct multiboot_tag_elf_sections *elf_sections_tag;
+  struct multiboot_tag_module *module_tag;
+  struct multiboot_tag_framebuffer *framebuffer_tag;
+  struct multiboot_tag *end_tag;
+} multiboot_info_t;
+
+void read_multiboot(uintptr_t multiboot_ptr, multiboot_info_t *self);
+void print_multiboot(multiboot_info_t *mbi);
+
 #endif /*  ! ASM_FILE */
 
 #endif /*  ! MULTIBOOT_HEADER */

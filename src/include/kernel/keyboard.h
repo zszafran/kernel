@@ -2,4 +2,4 @@
 
 #include <stdint.h>
 
-void init_kbd(void);
+void init_keyboard(void);

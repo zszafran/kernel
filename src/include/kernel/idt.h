@@ -40,6 +40,9 @@ enum IRQS {
 
 void init_idt();
 void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
+void enable_interrupts();
+void disable_interrupts();
+
 extern void idt_flush(uint32_t);
 
 extern void isr0 ();

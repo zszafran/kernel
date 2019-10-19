@@ -9,10 +9,6 @@
 	.type _start, @function
 	.extern check_multiboot
 	_start:
-		/* Record multiboot pointer and magic. */
-		mov %ebx, (multiboot_ptr)
-		mov %eax, (multiboot_magic)
-	
 		/*
 		To set up a stack, we set the esp register to point to the top of the
 		stack (as it grows downwards on x86 systems). This is necessarily done
@@ -34,6 +30,11 @@
 		runtime support to work as well.
 		*/
 		call _init
+
+		/* 
+		Push Multiboot2 pointer into main kernel call.
+		*/
+		push %ebx
 
 		/*
 		Enter the high-level kernel. The ABI requires the stack is 16-byte
@@ -66,14 +67,3 @@
 	This is useful when debugging or when you implement call tracing.
 	*/
 	.size _start, . - _start
-
-# Multiboot info pointer
-.section .multiboot.info
-	.global multiboot_ptr
-	.global multiboot_magic
-	multiboot_ptr:
-		.align 4
-		.long 0
-	multiboot_magic:
-		.align 4
-		.long 0

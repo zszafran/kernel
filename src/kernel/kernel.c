@@ -1,84 +1,60 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include <kernel/kbd.h>
+#include <kernel/keyboard.h>
 #include <kernel/timer.h>
-#include <kernel/tty.h>
+#include <kernel/framebuffer.h>
 #include <kernel/log.h>
-#include <boot/gdt.h>
-#include <boot/idt.h>
-#include <boot/multiboot2_info.h>
+#include <kernel/gdt.h>
+#include <kernel/idt.h>
+#include <kernel/multiboot2.h>
 
-multiboot_info_t boot_info;
+// TODO: Read these values ondemand instead of parsing. 
+multiboot_info_t mbi;
 
-void kernel_main(void) {
-	read_multiboot(&boot_info);
+void kernel_main(uintptr_t mbi_ptr) {
+	// Parse the information passed in from multiboot.
+	read_multiboot(mbi_ptr, &mbi);
 
-	terminal_initialize(
-		boot_info.framebuffer_tag->common.framebuffer_addr,
-      	boot_info.framebuffer_tag->common.framebuffer_width,
-      	boot_info.framebuffer_tag->common.framebuffer_height);
-
+	// The IDT and GDT tables need to be initialized. The CPU uses these tables
+    // to direct interrupts to the kernel and to describe the memory layout
+    // of the kernel.
 	init_gdt();
 	init_idt();
-	init_timer(50);
-	init_kbd();
 
-	log("Boot Info:");
+	// Initializes the Framebuffer, this will allow text rendering on the screen
+    // This also does not use any systems other than IO ports.
+	init_framebuffer(
+		mbi.framebuffer_tag->common.framebuffer_addr,
+      	mbi.framebuffer_tag->common.framebuffer_width,
+      	mbi.framebuffer_tag->common.framebuffer_height);
+	clear_framebuffer();
+	log("Booting...");
 
-  	log("\tCommand line = %s", boot_info.command_line_tag->string);
+	// Print the multiboot into payload.
+	print_multiboot(&mbi);
 
-  	log("\tBoot loader name = %s", boot_info.boot_loader_name_tag->string);
+	// Register the interrupt handler for the timer chip. This will get us
+    // a steady call every MS. The timer DOES NOT start ticking at this time.
+    // Only when the interrupts are enabled will we receive the calls.
+    // This sends an update to the kernel scheduler to update the running
+    // task status.
+	init_timer(TIMER_FREQ_1MS);
+	log("Timer setup for 1ms ticks.");
 
-  	log("\tmem_lower = %uKB, mem_upper = %uKB",
-      	boot_info.basic_meminfo_tag->mem_lower,
-      	boot_info.basic_meminfo_tag->mem_upper);
+	// Register the interrupt handler for the keyboard.
+	init_keyboard();
+	log("Keyboard setup.");
 
-  	log("\tBoot device 0x%x,%u,%u",
-      	boot_info.boot_device_tag->biosdev,
-      	boot_info.boot_device_tag->slice,
-      	boot_info.boot_device_tag->part);
-
-  	if (boot_info.memory_map_tag)
-  	{
-    	int entry_count = boot_info.memory_map_tag->size / boot_info.memory_map_tag->entry_size;
-    	log("\tMemory Map: numEntries=0x%x", entry_count);
-
-    	multiboot_memory_map_t *mmap;
-    	for (int i = 0; i < entry_count; i++)
-    	{
-      		mmap = (multiboot_memory_map_t *)((uint8_t *)boot_info.memory_map_tag->entries + (i * boot_info.memory_map_tag->entry_size));
-      		log("\t\tbase_addr = 0x%x%x, length = 0x%x%x, type = 0x%x",
-          		(unsigned)(mmap->addr >> 32),
-          		(unsigned)(mmap->addr & 0xffffffff),
-          		(unsigned)(mmap->len >> 32),
-          		(unsigned)(mmap->len & 0xffffffff),
-          		(unsigned)mmap->type);
-    	}
-  	}
-
-  	if (boot_info.framebuffer_tag)
-  	{
-    	log("\tFramebuffer: addr = 0x%x, type = 0x%x",
-        	boot_info.framebuffer_tag->common.framebuffer_addr,
-        	boot_info.framebuffer_tag->common.framebuffer_type);
-    	log("\t\twidth = 0x%x, height = 0x%x, pitch = 0x%x, colors = 0x%x",
-        	boot_info.framebuffer_tag->common.framebuffer_width,
-        	boot_info.framebuffer_tag->common.framebuffer_height,
-        	boot_info.framebuffer_tag->common.framebuffer_pitch,
-        	boot_info.framebuffer_tag->framebuffer_palette_num_colors);
-  	}
-
-  	log("\tMultiboot: start = 0x%x, end = 0x%x",
-      	boot_info.multiboot_start,
-      	boot_info.multiboot_end);
+	// Globally enable the interrupts. This will start popping up the timer
+    // and the scheduler will start switching to other threads periodically.
+	enable_interrupts();
+	log("Interrupts enabled.");
 
 	debug("Hello, kernel World!");
 
-	asm volatile ("int $0x3");
-	asm volatile ("int $0x4");
-
-	debug("Enablding interrupts...");
-	asm volatile ("sti");
-	while (1);
+	while (1)
+	{
+		cpu_idle();
+	}
 }

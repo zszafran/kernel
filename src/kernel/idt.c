@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <string.h>
-#include <boot/idt.h>
+#include <kernel/idt.h>
 #include <kernel/io.h>
 
 idt_entry_t idt_entries[256];
@@ -106,4 +106,14 @@ void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
     // We must uncomment the OR below when we get to using user-mode.
     // It sets the interrupt gate's privilege level to 3.
     idt_entries[num].access_byte   = flags /* | 0x60 */;
+}
+
+void enable_interrupts()
+{
+    asm volatile("sti");
+}
+
+void disable_interrupts()
+{
+    asm volatile("cli");
 }

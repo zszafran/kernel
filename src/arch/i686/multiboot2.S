@@ -1,5 +1,5 @@
 #define ASM_FILE        1
-#include <boot/multiboot2.h>
+#include <kernel/multiboot2.h>
 
 /*  The flags for the Multiboot header. */
 #ifdef __ELF__
