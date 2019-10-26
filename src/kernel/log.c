@@ -4,7 +4,7 @@
 
 void log(const char *__restrict format, ...)
 {
-  printf("\033[92m>>\033[0m ");
+  printf("\033[92m INFO\033[0m ");
   va_list parameters;
   va_start(parameters, format);
   vprintf(format, parameters);
@@ -14,7 +14,7 @@ void log(const char *__restrict format, ...)
 
 void warn(const char *__restrict format, ...)
 {
-  printf("\033[93m>>\033[0m ");
+  printf("\033[93m WARN\033[0m ");
   va_list parameters;
   va_start(parameters, format);
   vprintf(format, parameters);
@@ -24,7 +24,7 @@ void warn(const char *__restrict format, ...)
 
 void error(const char *__restrict format, ...)
 {
-  printf("\033[91m>>\033[0m ");
+  printf("\033[91mERROR\033[0m ");
   va_list parameters;
   va_start(parameters, format);
   vprintf(format, parameters);
@@ -34,7 +34,7 @@ void error(const char *__restrict format, ...)
 
 void debug(const char *__restrict format, ...)
 {
-  printf("\033[94m>>\033[0m ");
+  printf("\033[94mDEBUG\033[0m ");
   va_list parameters;
   va_start(parameters, format);
   vprintf(format, parameters);

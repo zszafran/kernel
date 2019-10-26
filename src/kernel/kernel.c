@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 
 #include <kernel/kernel.h>
@@ -8,6 +9,7 @@
 #include <kernel/log.h>
 #include <kernel/gdt.h>
 #include <kernel/idt.h>
+#include <kernel/paging.h>
 #include <kernel/multiboot2.h>
 
 void kernel_main(multiboot_info_t* mbi) {
@@ -20,8 +22,17 @@ void kernel_main(multiboot_info_t* mbi) {
 	// Initializes the Framebuffer, this will allow text rendering on the screen
     // This also does not use any systems other than IO ports.
 	init_framebuffer(mbi);
-	clear_framebuffer();
+	debug("Kernel start: 0x%x", &_KERNEL_START);
+    debug("Kernel end: 0x%x", &_KERNEL_END);
 	log("Booting...");
+
+	// The first module to initialize is the Page Allocator. This will provide
+    // virtual memory with paging. Paging IS ACTIVATED once init_page_allocator
+    // is called. We must now remember to allocate the page of memory we touch
+    // or the kernel will panic. This is good to enable it first because we
+    // will detect memory problems earlier in the development.
+    init_paging();
+    log("Paging setup.");
 
 	// Register the interrupt handler for the timer chip. This will get us
     // a steady call every MS. The timer DOES NOT start ticking at this time.
@@ -41,6 +52,19 @@ void kernel_main(multiboot_info_t* mbi) {
 	log("Interrupts enabled.");
 
 	debug("Hello, kernel World!");
+
+
+// TEST SCENARIOS ===========================================================
+
+// #define TEST_PAGE_FAULT 1
+
+#ifdef TEST_PAGE_FAULT
+	uintptr_t *ptr = (uintptr_t*)0xA0000000;
+   	uintptr_t do_page_fault = *ptr;
+	warn("%d", do_page_fault);
+#endif
+
+// END TEST SCENARIOS =======================================================
 
 	while (1)
 	{

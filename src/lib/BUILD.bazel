@@ -19,7 +19,6 @@ gcc_library(
         "//src/lib/string:libk",
     ],
     visibility = [
-        "//src:boot_internal",
         "//src:kernel_internal",
     ],
 )

@@ -38,10 +38,9 @@ def _qemu_deploy_impl(ctx):
         in_cdrom.short_path,
     ])
 
-
     ctx.actions.write(
         output = out_file,
-        content = "%s %s" % (tc.qemu.path, " ".join(args)),
+        content = "%s %s $@" % (tc.qemu.path, " ".join(args)),
         is_executable = True,
     )
 

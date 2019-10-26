@@ -32,6 +32,7 @@ void init_framebuffer(multiboot_info_t* mbi)
   	terminal_column = 0;
   	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
   	terminal_color_state = ansi_init();
+	clear_framebuffer();
 }
 
 void clear_framebuffer()

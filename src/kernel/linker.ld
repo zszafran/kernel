@@ -10,8 +10,8 @@ ENTRY(_start)
     _##name##_START = ABSOLUTE(.);
 
 #define DEFINE_END(name) \
-    _##name##_SIZE = ABSOLUTE(.) - _##name##_START;
- 
+    _##name##_END = ABSOLUTE(.);
+
 SECTIONS
 {
 	. = KERNEL_PHYSICAL_ADDR;
@@ -31,6 +31,7 @@ SECTIONS
 	{
 		DEFINE_START(RODATA)
 		*(.rodata)
+		*(.rodata.*)
 		DEFINE_END(RODATA)
 	}
  

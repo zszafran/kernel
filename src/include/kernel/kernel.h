@@ -11,6 +11,23 @@
 
 #ifndef LINKER_FILE
 
+#include <stdint.h>
+
+extern uint32_t _KERNEL_START;
+extern uint32_t _KERNEL_END;
+
+extern uint32_t _TEXT_START;
+extern uint32_t _TEXT_END;
+
+extern uint32_t _RODATA_START;
+extern uint32_t _RODATA_END;
+
+extern uint32_t _DATA_START;
+extern uint32_t _DATA_END;
+
+extern uint32_t _BBS_START;
+extern uint32_t _BBS_END;
+
 extern void cpu_idle(void);
 
 #endif /*  ! LINKER_FILE */
